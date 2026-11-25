@@ -22,6 +22,11 @@ public class FlappyGame
     public int Score { get; private set; }
     public float Speed { get; } = 3.5f;
 
+    // Arayüz bu olaylara abone olarak ses çalar; oyun sınıfı sesi bilmez.
+    public event Action? Flapped;
+    public event Action? Scored;
+    public event Action? Crashed;
+
     public FlappyGame()
     {
         for (int i = 0; i < PipeCount; i++)
@@ -44,6 +49,7 @@ public class FlappyGame
         if (State == GameState.GameOver) return;
         State = GameState.Playing;
         Bird.Flap();
+        Flapped?.Invoke();
     }
 
     public void Update()
@@ -60,6 +66,7 @@ public class FlappyGame
             {
                 pipe.Passed = true;
                 Score++;
+                Scored?.Invoke();
             }
 
             // ekrandan çıkan boru en sağdakinin arkasına taşınır
@@ -68,7 +75,10 @@ public class FlappyGame
         }
 
         if (HasCollision())
+        {
             State = GameState.GameOver;
+            Crashed?.Invoke();
+        }
     }
 
     private bool HasCollision()

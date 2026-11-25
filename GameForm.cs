@@ -1,3 +1,4 @@
+using FlappyBird.Audio;
 using FlappyBird.Game;
 
 namespace FlappyBird;
@@ -6,6 +7,7 @@ namespace FlappyBird;
 public class GameForm : Form
 {
     private readonly FlappyGame _game = new();
+    private readonly SoundManager _sounds = new();
     private readonly System.Windows.Forms.Timer _timer = new() { Interval = 20 };
     private readonly Button _restartButton = new();
     private readonly Font _scoreFont = new("Segoe UI", 28, FontStyle.Bold);
@@ -33,6 +35,10 @@ public class GameForm : Form
         _restartButton.Click += (_, _) => Restart();
         Controls.Add(_restartButton);
 
+        _game.Flapped += _sounds.PlayFlap;
+        _game.Scored += _sounds.PlayScore;
+        _game.Crashed += _sounds.PlayCrash;
+
         KeyDown += OnKeyDown;
         KeyUp += OnKeyUp;
         _timer.Tick += OnTick;
@@ -41,6 +47,12 @@ public class GameForm : Form
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
+        if (e.KeyCode == Keys.M) // sesi aç/kapat
+        {
+            _sounds.Muted = !_sounds.Muted;
+            return;
+        }
+
         if (e.KeyCode != Keys.Space) return;
 
         e.SuppressKeyPress = true;
@@ -105,6 +117,7 @@ public class GameForm : Form
         if (disposing)
         {
             _timer.Dispose();
+            _sounds.Dispose();
             _scoreFont.Dispose();
             _infoFont.Dispose();
         }
