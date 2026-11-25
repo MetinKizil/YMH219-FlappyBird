@@ -28,6 +28,8 @@ Visual Studio ile: `YMH219-FlappyBird.csproj` dosyasını açıp F5'e bas.
 - Boru veya zemine çarpınca Game Over
 - Geçilen her boru için 1 puan
 - Yeniden Başlat butonu
+- Kod ile üretilen ses efektleri (zıplama, skor, çarpışma); **M** tuşu ile sessize alma
+- Hareketli bulutlar ve zemin, kanat çırpan ve hıza göre eğilen kuş
 
 ## Sınıf Yapısı
 
@@ -36,7 +38,9 @@ Visual Studio ile: `YMH219-FlappyBird.csproj` dosyasını açıp F5'e bas.
 | `Bird` | Kuşun konumu, hızı, yer çekimi ve zıplama |
 | `Pipe` | Engelin konumu, boşluğu ve hareketi |
 | `FlappyGame` | Oyun durumu, skor, hız ve çarpışma kontrolü |
-| `GameForm` | Çizim, klavye olayları, zamanlayıcı ve buton |
+| `GameForm` | Klavye olayları, zamanlayıcı ve buton |
+| `GameRenderer` | Gökyüzü, boru, zemin, kuş ve yazı çizimi |
+| `SoundManager` | Ses efektlerini üretme ve çalma |
 
 ## Ekran Görüntüleri
 
@@ -48,3 +52,4 @@ _(en az 2 ekran görüntüsü eklenecek)_
 - En yüksek skor saklanmaz.
 - Pencere boyutu sabittir; ekran ölçeklemesine göre uyarlanmaz.
 - Çarpışma, kuşun yuvarlak şekli yerine onu çevreleyen kare ile hesaplanır.
+- Aynı anda tek ses çalınır; yeni ses öncekini keser.

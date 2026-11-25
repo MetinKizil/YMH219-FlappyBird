@@ -1,5 +1,6 @@
 using FlappyBird.Audio;
 using FlappyBird.Game;
+using FlappyBird.Rendering;
 
 namespace FlappyBird;
 
@@ -10,8 +11,7 @@ public class GameForm : Form
     private readonly SoundManager _sounds = new();
     private readonly System.Windows.Forms.Timer _timer = new() { Interval = 20 };
     private readonly Button _restartButton = new();
-    private readonly Font _scoreFont = new("Segoe UI", 28, FontStyle.Bold);
-    private readonly Font _infoFont = new("Segoe UI", 14, FontStyle.Bold);
+    private readonly GameRenderer _renderer = new();
     private bool _spaceHeld;
 
     public GameForm()
@@ -22,14 +22,17 @@ public class GameForm : Form
         FormBorderStyle = FormBorderStyle.FixedSingle;
         MaximizeBox = false;
         StartPosition = FormStartPosition.CenterScreen;
-        BackColor = Color.SkyBlue;
         DoubleBuffered = true; // çizimde titremeyi önler
         KeyPreview = true;     // tuş olaylarını önce form alır
 
         _restartButton.Text = "Yeniden Başlat";
         _restartButton.Size = new Size(180, 45);
         _restartButton.Location = new Point((FlappyGame.Width - 180) / 2, 340);
-        _restartButton.BackColor = Color.White;
+        _restartButton.BackColor = Color.Orange;
+        _restartButton.ForeColor = Color.White;
+        _restartButton.FlatStyle = FlatStyle.Flat;
+        _restartButton.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+        _restartButton.Cursor = Cursors.Hand;
         _restartButton.TabStop = false;
         _restartButton.Visible = false;
         _restartButton.Click += (_, _) => Restart();
@@ -72,6 +75,7 @@ public class GameForm : Form
     private void OnTick(object? sender, EventArgs e)
     {
         _game.Update();
+        _renderer.Advance(_game.State);
         _restartButton.Visible = _game.State == GameState.GameOver;
         Invalidate(); // ekranı yeniden çizdirir
     }
@@ -86,30 +90,7 @@ public class GameForm : Form
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
-        Graphics g = e.Graphics;
-
-        foreach (Pipe pipe in _game.Pipes)
-        {
-            g.FillRectangle(Brushes.ForestGreen, pipe.TopBounds);
-            g.FillRectangle(Brushes.ForestGreen, pipe.BottomBounds(FlappyGame.GroundY));
-        }
-
-        g.FillRectangle(Brushes.SandyBrown, 0, FlappyGame.GroundY,
-                        FlappyGame.Width, FlappyGame.Height - FlappyGame.GroundY);
-        g.FillEllipse(Brushes.Gold, _game.Bird.Bounds);
-
-        DrawCentered(g, _game.Score.ToString(), _scoreFont, 30);
-
-        if (_game.State == GameState.Ready)
-            DrawCentered(g, "Başlamak için BOŞLUK tuşuna bas", _infoFont, 200);
-        else if (_game.State == GameState.GameOver)
-            DrawCentered(g, "GAME OVER", _scoreFont, 250);
-    }
-
-    private static void DrawCentered(Graphics g, string text, Font font, float y)
-    {
-        SizeF size = g.MeasureString(text, font);
-        g.DrawString(text, font, Brushes.Black, (FlappyGame.Width - size.Width) / 2, y);
+        _renderer.Draw(e.Graphics, _game);
     }
 
     protected override void Dispose(bool disposing)
@@ -118,8 +99,7 @@ public class GameForm : Form
         {
             _timer.Dispose();
             _sounds.Dispose();
-            _scoreFont.Dispose();
-            _infoFont.Dispose();
+            _renderer.Dispose();
         }
         base.Dispose(disposing);
     }
