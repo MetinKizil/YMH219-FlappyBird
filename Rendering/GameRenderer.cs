@@ -34,10 +34,12 @@ public sealed class GameRenderer : IDisposable
         {
             DrawText(g, "BOŞLUK tuşu ile başla", 22, 180);
             DrawText(g, "M: sesi aç / kapat", 13, 220);
+            DrawText(g, $"En iyi skor: {game.BestScore}", 18, 90);
         }
         else if (game.State == GameState.GameOver)
         {
             DrawText(g, "GAME OVER", 40, 230);
+            DrawText(g, $"En iyi skor: {game.BestScore}", 18, 290);
         }
     }
 

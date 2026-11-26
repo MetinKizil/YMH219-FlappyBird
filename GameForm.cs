@@ -7,7 +7,9 @@ namespace FlappyBird;
 /// <summary>Ekran çizimi ve kullanıcı girişi. Oyun kuralları FlappyGame içindedir.</summary>
 public class GameForm : Form
 {
-    private readonly FlappyGame _game = new();
+    private readonly FlappyGame _game = new(new HighScoreStore(Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "YMH219-FlappyBird", "highscore.txt")));
     private readonly SoundManager _sounds = new();
     private readonly System.Windows.Forms.Timer _timer = new() { Interval = 20 };
     private readonly Button _restartButton = new();

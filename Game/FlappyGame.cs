@@ -15,11 +15,13 @@ public class FlappyGame
 
     private readonly Random _random = new();
     private readonly List<Pipe> _pipes = new();
+    private readonly HighScoreStore _highScores;
 
     public Bird Bird { get; } = new(BirdStartY);
     public IReadOnlyList<Pipe> Pipes => _pipes;
     public GameState State { get; private set; }
     public int Score { get; private set; }
+    public int BestScore { get; private set; }
     public float Speed { get; } = 3.5f;
 
     // Arayüz bu olaylara abone olarak ses çalar; oyun sınıfı sesi bilmez.
@@ -27,8 +29,11 @@ public class FlappyGame
     public event Action? Scored;
     public event Action? Crashed;
 
-    public FlappyGame()
+    public FlappyGame(HighScoreStore highScores)
     {
+        _highScores = highScores;
+        BestScore = highScores.Load();
+
         for (int i = 0; i < PipeCount; i++)
             _pipes.Add(new Pipe());
         Reset();
@@ -77,8 +82,17 @@ public class FlappyGame
         if (HasCollision())
         {
             State = GameState.GameOver;
+            SaveBestScore();
             Crashed?.Invoke();
         }
+    }
+
+    private void SaveBestScore()
+    {
+        if (Score <= BestScore) return;
+
+        BestScore = Score;
+        _highScores.Save(BestScore);
     }
 
     private bool HasCollision()
