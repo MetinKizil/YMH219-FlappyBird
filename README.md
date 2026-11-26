@@ -47,7 +47,9 @@ Visual Studio ile: `YMH219-FlappyBird.csproj` dosyasını açıp F5'e bas.
 
 ## Ekran Görüntüleri
 
-_(en az 2 ekran görüntüsü eklenecek)_
+| Başlangıç ekranı | Oyun sırasında |
+|---|---|
+| ![Başlangıç ekranı ve en iyi skor](screenshots/baslangic.png) | ![Borular, skor ve seviye](screenshots/oyun.png) |
 
 ## Bilinen Sınırlamalar
 
