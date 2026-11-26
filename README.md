@@ -2,8 +2,8 @@
 
 Nesne Tabanlı Programlama (YMH 219) dersi için C# ve Windows Forms ile geliştirilen, Flappy Bird benzeri masaüstü oyunu.
 
-**Öğrenci:** _(adını soyadını yaz)_
-**Öğrenci No:** _(öğrenci numaranı yaz)_
+**Öğrenci:** Muhammed Metin Kızıl
+**Öğrenci No:** 250541038
 
 ## Kullanılan Teknolojiler
 
