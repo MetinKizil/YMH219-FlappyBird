@@ -29,6 +29,7 @@ Visual Studio ile: `YMH219-FlappyBird.csproj` dosyasını açıp F5'e bas.
 - Geçilen her boru için 1 puan
 - Yeniden Başlat butonu
 - En yüksek skoru dosyada saklama ve ekranda gösterme
+- Her 5 puanda seviye ve hız artışı (üst sınırlı)
 - Kod ile üretilen ses efektleri (zıplama, skor, çarpışma); **M** tuşu ile sessize alma
 - Hareketli bulutlar ve zemin, kanat çırpan ve hıza göre eğilen kuş
 
@@ -50,7 +51,7 @@ _(en az 2 ekran görüntüsü eklenecek)_
 
 ## Bilinen Sınırlamalar
 
-- Oyun hızı sabittir, zorluk seviyesi yoktur.
+- Zorluk yalnızca hızla artar; boru boşluğu sabittir ve zorluk seçimi yoktur.
 - En yüksek skor yalnızca oyun bittiğinde kaydedilir.
 - Pencere boyutu sabittir; ekran ölçeklemesine göre uyarlanmaz.
 - Çarpışma, kuşun yuvarlak şekli yerine onu çevreleyen kare ile hesaplanır.

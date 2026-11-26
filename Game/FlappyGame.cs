@@ -13,6 +13,11 @@ public class FlappyGame
     private const int PipeSpacing = 240;
     private const int BirdStartY = 280;
 
+    private const float StartSpeed = 3.5f;
+    private const float SpeedStep = 0.4f;
+    private const float MaxSpeed = 6.3f;
+    private const int PointsPerLevel = 5;
+
     private readonly Random _random = new();
     private readonly List<Pipe> _pipes = new();
     private readonly HighScoreStore _highScores;
@@ -22,7 +27,10 @@ public class FlappyGame
     public GameState State { get; private set; }
     public int Score { get; private set; }
     public int BestScore { get; private set; }
-    public float Speed { get; } = 3.5f;
+
+    /// <summary>Her 5 puanda bir seviye; seviye arttıkça borular hızlanır.</summary>
+    public int Level => Score / PointsPerLevel + 1;
+    public float Speed => Math.Min(StartSpeed + (Level - 1) * SpeedStep, MaxSpeed);
 
     // Arayüz bu olaylara abone olarak ses çalar; oyun sınıfı sesi bilmez.
     public event Action? Flapped;

@@ -77,7 +77,7 @@ public class GameForm : Form
     private void OnTick(object? sender, EventArgs e)
     {
         _game.Update();
-        _renderer.Advance(_game.State);
+        _renderer.Advance(_game);
         _restartButton.Visible = _game.State == GameState.GameOver;
         Invalidate(); // ekranı yeniden çizdirir
     }

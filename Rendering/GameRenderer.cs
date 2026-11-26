@@ -11,11 +11,15 @@ public sealed class GameRenderer : IDisposable
 
     private readonly FontFamily _fontFamily = new("Segoe UI");
     private int _frame; // animasyon sayacı
+    private float _groundDistance; // hız değişince zemin sıçramasın diye biriktirilir
 
     /// <summary>Her zamanlayıcı adımında çağrılır; çarpışınca sahne donar.</summary>
-    public void Advance(GameState state)
+    public void Advance(FlappyGame game)
     {
-        if (state != GameState.GameOver) _frame++;
+        if (game.State == GameState.GameOver) return;
+
+        _frame++;
+        _groundDistance += game.Speed;
     }
 
     public void Draw(Graphics g, FlappyGame game)
@@ -25,10 +29,12 @@ public sealed class GameRenderer : IDisposable
         DrawSky(g);
         foreach (Pipe pipe in game.Pipes)
             DrawPipe(g, pipe);
-        DrawGround(g, game.Speed);
+        DrawGround(g);
         DrawBird(g, game);
 
         DrawText(g, game.Score.ToString(), 48, 25);
+        if (game.State == GameState.Playing)
+            DrawText(g, $"Seviye {game.Level}", 14, 85);
 
         if (game.State == GameState.Ready)
         {
@@ -89,10 +95,10 @@ public sealed class GameRenderer : IDisposable
         g.DrawRectangle(outline, r.X, r.Y, r.Width, r.Height);
     }
 
-    private void DrawGround(Graphics g, float speed)
+    private void DrawGround(Graphics g)
     {
         const int stripe = 32;
-        int offset = (int)(_frame * speed) % stripe;
+        int offset = (int)_groundDistance % stripe;
 
         using var soil = new SolidBrush(Color.FromArgb(222, 190, 130));
         using var grass = new SolidBrush(Color.FromArgb(120, 195, 60));
